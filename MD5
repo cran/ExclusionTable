@@ -1,0 +1,13 @@
+9d3798c4e4f93cb61b88882e5bd72ba7 *DESCRIPTION
+596492528659e618ca972d0b492c614e *NAMESPACE
+7fb78e0591e7274c618c65d215bcf883 *NEWS.md
+fee835a2b736c40635d5b859a3c2a0c1 *R/exclusion_table.R
+e1f49fe62da5c010e76b8a6840996743 *R/print.exl_tbl.R
+40a31dee58ea6df5632e0027e7722f8a *README.md
+190674162f59236b3c31df75f68edbf6 *build/vignette.rds
+2eeddbfe37e22fb971dc48c18c94d290 *inst/doc/ExclusionTable_vignette.R
+18003e831b54e2994eb02fbe81e92756 *inst/doc/ExclusionTable_vignette.Rmd
+195cc3f7de0c7cc9b3da13e9653734db *inst/doc/ExclusionTable_vignette.html
+abdb6b375f42c5de92f96c11c691d0f4 *man/exclusion_table.Rd
+40cdfa3a1078792d1020fccc7274dd7a *man/print.exl_tbl.Rd
+18003e831b54e2994eb02fbe81e92756 *vignettes/ExclusionTable_vignette.Rmd

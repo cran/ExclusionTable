@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -62,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -121,13 +121,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -523,6 +530,29 @@ individuals who live in a home with 2, 4 and 9 rooms.</p>
 <p>By supplying objects as names lists to the <TT>obj</TT> argument of
 <TT>exclusion_table</TT> we can access them in our filter calls using
 <TT>obj$&lt;name of your object&gt;</TT>.</p>
+<p>Lastely, we sometimes might also be interested in which specific
+observations we exclude with each inclusion/exclusion criteria. For this
+we can use the <code>id</code> argument, which allows us to get a list
+of IDs, that have been excluded at each step. Let’s take a look at the
+following example:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>NHANES_ex_id <span class="ot">&lt;-</span> </span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="fu">exclusion_table</span>(NHANES,</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>                  <span class="at">exclusion_criteria =</span> <span class="st">&quot;is.na(BMI)&quot;</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>                  <span class="at">labels_exclusion   =</span> <span class="st">&quot;Missing BMI&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>                  <span class="at">id                 =</span> <span class="st">&quot;ID&quot;</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>                  <span class="at">keep_data =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>NHANES_ex_id<span class="sc">$</span>table_ex</span></code></pre></div>
+<pre><code>##      exclusion n_prior n_post n_excluded
+##         &lt;char&gt;   &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1: Missing BMI   10000   9634        366
+## 2:       TOTAL   10000   9634        366
+##                                        ids
+##                                     &lt;list&gt;
+## 1: 51755,51962,52066,52248,52248,52266,...
+## 2: 51755,51962,52066,52248,52248,52266,...</code></pre>
+<p>The <code>table_ex</code> objects now includes a list with the
+excluded IDs for each exclusion/inclusion criteria.</p>
 <p>To summaries the <TT>ExclusionTable::exclusion_table()</TT> function
 allows you to easily keep track of your exclusion and inclusion criteria
 and helps you to report how many individuals you excluded at each step.

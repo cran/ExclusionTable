@@ -1,4 +1,4 @@
-## ---- message=FALSE, warning=FALSE--------------------------------------------
+## ----message=FALSE, warning=FALSE---------------------------------------------
 # Load packages
 library(NHANES)         # NHANES dataset
 library(dplyr)          # Data manipulation
@@ -34,7 +34,7 @@ exclusion_table(NHANES,
                 labels_exclusion   = "Missing BMI",
                 keep_data = FALSE)
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 NHANES_ex_tab <- 
   exclusion_table(NHANES,
                   inclusion_criteria = c("Gender == 'female'",
@@ -60,4 +60,14 @@ exclusion_table(NHANES,
                 inclusion_criteria = c("HomeRooms %in% obj$room_selection"),
                 labels_inclusion   = c("2, 4, 9 rooms"),
                 obj = list(room_selection = room_selection))
+
+## ----MESSAGE=FALSE------------------------------------------------------------
+NHANES_ex_id <- 
+  exclusion_table(NHANES,
+                  exclusion_criteria = "is.na(BMI)",
+                  labels_exclusion   = "Missing BMI",
+                  id                 = "ID",
+                  keep_data = FALSE)
+
+NHANES_ex_id$table_ex
 
